@@ -1,6 +1,6 @@
 package lineares;
 
-public class ListaEstatica {
+public class ListaEstatica implements Lista {
 	private int[] info;
 	private int tamanho;
 
@@ -9,6 +9,7 @@ public class ListaEstatica {
 		tamanho = 0;
 	}
 
+	@Override
 	public void inserir(int valor) {
 		if (tamanho == info.length) {
 			this.redimensionar();
@@ -25,6 +26,7 @@ public class ListaEstatica {
 		info = novo;
 	}
 
+	@Override
 	public String exibir() {
 		String resultado = "[";
 		for (int i = 0; i < tamanho; i++) {
@@ -33,6 +35,7 @@ public class ListaEstatica {
 		return resultado + "]";
 	}
 
+	@Override
 	public int buscar(int valor) {
 		for (int i = 0; i < tamanho; i++) {
 			if (info[i] == valor) {
@@ -42,10 +45,12 @@ public class ListaEstatica {
 		return -1;
 	}
 
+	@Override
 	public boolean estaVazia() {
 		return (tamanho == 0);
 	}
 
+	@Override
 	public void retirar(int valor) {
 		int posicao = this.buscar(valor);
 
@@ -57,8 +62,9 @@ public class ListaEstatica {
 		}
 	}
 
-	public ListaEstatica copiar() {
-		ListaEstatica novaLista = new ListaEstatica();
+	@Override
+	public Lista copiar() {
+		Lista novaLista = new ListaEstatica();
 
 		for (int idx = 0; idx < tamanho; idx++)
 			novaLista.inserir(info[idx]);
@@ -66,17 +72,20 @@ public class ListaEstatica {
 		return novaLista;
 	}
 
-	public void concatenar(ListaEstatica outraLista) {
+	@Override
+	public void concatenar(Lista outraLista) {
 		for (int idx = 0; idx < outraLista.getTamanho(); idx++)
-			this.inserir(outraLista.info[idx]); // a pensar
+			this.inserir(outraLista.pegar(idx)); 
 	}
 
+	@Override
 	public int getTamanho() {
 		return this.tamanho;
 	}
 
-	public ListaEstatica dividir() {
-		ListaEstatica novaLista = new ListaEstatica();
+	@Override
+	public Lista dividir() {
+		Lista novaLista = new ListaEstatica();
 
 		int tamanhoOriginal = tamanho;
 		int metadeLista = tamanho / 2;
@@ -87,5 +96,10 @@ public class ListaEstatica {
 		this.tamanho = metadeLista;
 
 		return novaLista;
+	}
+
+	@Override
+	public int pegar(int posicao) {
+		return info[posicao];
 	}
 }
