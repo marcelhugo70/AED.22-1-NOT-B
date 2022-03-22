@@ -1,18 +1,17 @@
 package lineares;
 
-public class ListaEncadeada implements Lista {
-	private NoLista primeiro;
-	private NoLista ultimo;
+public class ListaEncadeada<T> implements Lista<T> {
+	private NoLista<T> primeiro;
+	private NoLista<T> ultimo;
 	private int qtdElementos;
-	
+
 	@Override
-	public void inserir(int valor) {
-		NoLista novo = new NoLista();
+	public void inserir(T valor) {
+		NoLista<T> novo = new NoLista<>();
 		novo.setInfo(valor);
 		if (this.estaVazia()) {
 			primeiro = novo;
-		}
-		else {
+		} else {
 			ultimo.setProx(novo);
 		}
 		ultimo = novo;
@@ -22,20 +21,20 @@ public class ListaEncadeada implements Lista {
 	@Override
 	public String exibir() {
 		String resultado = "[";
-		NoLista p = primeiro;
+		NoLista<T> p = primeiro;
 		while (p != null) {
-			resultado += p.getInfo()+", ";
+			resultado += p.getInfo() + ", ";
 			p = p.getProx();
 		}
-		return resultado+"]";
+		return resultado + "]";
 	}
 
 	@Override
-	public int buscar(int valor) {
+	public int buscar(T valor) {
 		int indice = 0;
 		NoLista p = primeiro;
 		while (p != null) {
-			if (p.getInfo() == valor) {
+			if (p.getInfo().equals(valor)) {
 				return indice;
 			}
 			p = p.getProx();
@@ -50,56 +49,105 @@ public class ListaEncadeada implements Lista {
 	}
 
 	@Override
-	public void retirar(int valor) {
-		NoLista anterior = null;
-		NoLista p = primeiro;
-		
-		while (p!=null && p.getInfo()!=valor) {
+	public void retirar(T valor) {
+		NoLista<T> anterior = null;
+		NoLista<T> p = primeiro;
+
+		while (p != null && !p.getInfo().equals(valor)) {
 			anterior = p;
 			p = p.getProx();
 		}
-		if (p!=null) { // significa que encontrou o elemento a ser retirado
+		if (p != null) { // significa que encontrou o elemento a ser retirado
 			if (anterior == null) {
 				primeiro = p.getProx();
-			}
-			else {
+			} else {
 				anterior.setProx(p.getProx());
 			}
 			if (ultimo == p) {
 				ultimo = anterior;
 			}
+			qtdElementos--;
 		}
 
 	}
 
 	@Override
-	public Lista copiar() {
-		// TODO Auto-generated method stub
-		return null;
+	public Lista<T> copiar() {
+		Lista<T> listaCopia = new ListaEncadeada<>();
+		NoLista<T> p = primeiro;
+		while (p != null) {
+			T valor = p.getInfo();
+			listaCopia.inserir(valor);
+			p = p.getProx();
+		}
+		return listaCopia;
 	}
 
 	@Override
-	public void concatenar(Lista outraLista) {
-		// TODO Auto-generated method stub
-
+	public void concatenar(Lista<T> outra) {
+		for (int i = 0; i < outra.getTamanho(); i++) {
+			inserir(outra.pegar(i));
+		}
 	}
 
 	@Override
 	public int getTamanho() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.qtdElementos;
+	}
+
+	
+	public Lista dividir2() { // Kaue e Pedro: manda a primeira metade para a outra lista
+		Lista<T> nova = new ListaEncadeada<>();
+		NoLista<T> iterador = primeiro;
+		int metade = qtdElementos / 2;
+
+		for (int idx = 0; idx < metade; ++idx) {
+			nova.inserir(iterador.getInfo());
+			iterador = iterador.getProx();
+		}
+
+		primeiro = iterador;
+		qtdElementos = qtdElementos - metade;
+		return nova;
+	}
+
+	public Lista<T> dividir() {  // Hiago: mantém a primeira metade e manda a segunda metada para a nova lista
+		int qtd = getTamanho() / 2;
+		ListaEncadeada<T> novaLista = new ListaEncadeada<>();
+		NoLista<T> p = primeiro;
+		int contador = 0;
+
+		while (p != null) {
+			++contador;
+			if (contador > qtd)
+				novaLista.inserir(p.getInfo());
+
+			if (contador == qtd) {
+				ultimo = p;
+			}
+
+			p = p.getProx();
+		}
+		ultimo.setProx(null);
+		qtdElementos = qtd;
+		return novaLista;
 	}
 
 	@Override
-	public Lista dividir() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int pegar(int posicao) {
-		// TODO Auto-generated method stub
-		return 0;
+	public T pegar(int posicao) {
+		if (posicao < 0 || posicao >= qtdElementos) {
+			throw new IndexOutOfBoundsException("Index:" + posicao + " Size:" + qtdElementos);
+		}
+		int contador = 0;
+		NoLista<T> p = primeiro;
+		while (p != null) {
+			if (contador == posicao) {
+				return p.getInfo();
+			}
+			contador++;
+			p = p.getProx();
+		}
+		return null; // nunca deveria chegar aqui
 	}
 
 }

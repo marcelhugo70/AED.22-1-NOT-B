@@ -1,16 +1,16 @@
 package lineares;
 
-public class ListaEstatica implements Lista {
-	private int[] info;
+public class ListaEstatica<T> implements Lista<T> {
+	private T[] info;
 	private int tamanho;
 
 	public ListaEstatica() {
-		info = new int[10];
+		info = (T[])new Object[10];
 		tamanho = 0;
 	}
 
 	@Override
-	public void inserir(int valor) {
+	public void inserir(T valor) {
 		if (tamanho == info.length) {
 			this.redimensionar();
 		}
@@ -19,7 +19,7 @@ public class ListaEstatica implements Lista {
 	}
 
 	private void redimensionar() {
-		int[] novo = new int[tamanho + 10];
+		T[] novo = (T[]) new Object[tamanho + 10];
 		for (int i = 0; i < tamanho; i++) {
 			novo[i] = info[i];
 		}
@@ -36,9 +36,9 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public int buscar(int valor) {
+	public int buscar(T valor) {
 		for (int i = 0; i < tamanho; i++) {
-			if (info[i] == valor) {
+			if (info[i].equals(valor)) {
 				return i;
 			}
 		}
@@ -51,7 +51,7 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public void retirar(int valor) {
+	public void retirar(T valor) {
 		int posicao = this.buscar(valor);
 
 		if (posicao != -1) {
@@ -63,8 +63,8 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public Lista copiar() {
-		Lista novaLista = new ListaEstatica();
+	public Lista<T> copiar() {
+		Lista<T> novaLista = new ListaEstatica<>();
 
 		for (int idx = 0; idx < tamanho; idx++)
 			novaLista.inserir(info[idx]);
@@ -73,7 +73,7 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public void concatenar(Lista outraLista) {
+	public void concatenar(Lista<T> outraLista) {
 		for (int idx = 0; idx < outraLista.getTamanho(); idx++)
 			this.inserir(outraLista.pegar(idx)); 
 	}
@@ -84,8 +84,8 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public Lista dividir() {
-		Lista novaLista = new ListaEstatica();
+	public Lista<T> dividir() {
+		Lista<T> novaLista = new ListaEstatica<>();
 
 		int tamanhoOriginal = tamanho;
 		int metadeLista = tamanho / 2;
@@ -99,7 +99,7 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public int pegar(int posicao) {
+	public T pegar(int posicao) {
 		return info[posicao];
 	}
 }
