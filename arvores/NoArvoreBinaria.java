@@ -45,4 +45,26 @@ public class NoArvoreBinaria<T> { // contribuição da Julia
 		retorno += ">";
 		return retorno;
 	}
+
+	public NoArvoreBinaria<T> getEsq() {
+		return esq;
+	}
+
+	public void setEsq(NoArvoreBinaria<T> esq) {
+		this.esq = esq;
+	}
+
+	public NoArvoreBinaria<T> getDir() {
+		return dir;
+	}
+
+	public void setDir(NoArvoreBinaria<T> dir) {
+		this.dir = dir;
+	}
+
+	public void setInfo(T info) {
+		this.info = info;
+	}
+	
+	
 }
