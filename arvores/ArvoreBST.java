@@ -19,38 +19,55 @@ public class ArvoreBST<T extends Comparable<T>> extends ArvoreBinariaAbstract<T>
 
 	public void retirar(T valor) {
 		NoArvoreBST<T> noARetirar = this.buscar(valor);
-		if (noARetirar == null) {
-			return;
+		if (noARetirar != null) {
+			this.retirar(noARetirar);
 		}
+	}
 
+	private void retirar(NoArvoreBST<T> noARetirar) {
 		NoArvoreBST<T> pai = this.descobrirPai(noARetirar);
-		
-		if (noARetirar.ehFolha()) { // caso 1
-			if (pai == null) {  // nó a retirar é raiz
-				
-			}
-			else {
-				
+
+		if (noARetirar.ehFolha()) { // caso 1 (é folha)
+			if (pai == null) { // nó a retirar é raiz
+				this.setRaiz(null);
+			} else {
+				if (pai.getEsq() == noARetirar) {
+					pai.setEsq(null);
+				} else {
+					pai.setDir(null);
+				}
 			}
 		} else {
-			if (noARetirar.temUmFilho()) { // caso 2
-				if (pai == null) {  // nó a retirar é raiz
-					
+			if (noARetirar.temUmFilho()) { // caso 2 (tem apenas 1 filho)
+				NoArvoreBinaria<T> filho = (noARetirar.getEsq() != null ? noARetirar.getEsq() : noARetirar.getDir());
+
+				if (pai == null) { // nó a retirar é raiz
+					this.setRaiz(filho);
+				} else {
+
+					if (pai.getEsq() == noARetirar) {
+						pai.setEsq(filho);
+					} else {
+						pai.setDir(filho);
+					}
 				}
-				else {
-					
-				}
-			}
-			else { //caso 3
-				if (pai == null) {  // nó a retirar é raiz
-					
-				}
-				else {
-					
-				}
+			} else { // caso 3 (tem dois filhos)
+				NoArvoreBST<T> sucessor = this.pegarNoSucessor(noARetirar);
+				T info = sucessor.getInfo();
+				this.retirar(sucessor);
+				noARetirar.setInfo(info);
 			}
 		}
+	}
+	
+	
 
+	private NoArvoreBST<T> pegarNoSucessor(NoArvoreBST<T> no) {
+		NoArvoreBST<T> sucessor = (NoArvoreBST<T>) no.getDir();
+		while (sucessor.getEsq() != null) {
+			sucessor = (NoArvoreBST<T>) sucessor.getEsq();
+		}
+		return sucessor;
 	}
 
 	private NoArvoreBST<T> descobrirPai(NoArvoreBST<T> noARetirar) {
@@ -70,8 +87,7 @@ public class ArvoreBST<T extends Comparable<T>> extends ArvoreBinariaAbstract<T>
 		return noPai;
 	}
 
-
-	public NoArvoreBST<T> buscarPai(T valor) {  // uma alternativa recursiva ao descobrirPai
+	public NoArvoreBST<T> buscarPai(T valor) { // uma alternativa recursiva ao descobrirPai
 		if (this.vazia()) {
 			return null;
 		}
