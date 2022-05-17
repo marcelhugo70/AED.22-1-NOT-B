@@ -74,4 +74,15 @@ public class NoArvoreBST<T extends Comparable<T>> extends NoArvoreBinaria<T> {
 				|| (this.getEsq() == null && this.getDir() != null);
 		//return Boolean.logicalXor(this.getEsq() == null, this.getDir() == null);
 	}
+	
+	public String imprimeEmOrdem() {
+		String retorno = "";
+		if (this.getEsq() != null)
+			retorno += ((NoArvoreBST<T>)this.getEsq()).imprimeEmOrdem();
+		retorno += this.getInfo()+", ";
+		if (this.getDir() != null)
+			retorno += ((NoArvoreBST<T>)this.getDir()).imprimeEmOrdem();
+
+		return retorno;
+	}
 }

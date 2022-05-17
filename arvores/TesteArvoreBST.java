@@ -25,11 +25,11 @@ public class TesteArvoreBST {
 		System.out.println("Danilo ->" + arvBusca.buscar("Danilo").getInfo());
 		System.out.println("Maria ->" + arvBusca.buscar("Maria").getInfo());
 		System.out.println(arvBusca);
-		
+
 		geraArvore();
 	}
 
-	public static void geraArvore() {  // contribuição do Nadir
+	public static void geraArvore() { // contribuição do Nadir
 		int tamanho = Integer.parseInt(JOptionPane.showInputDialog("Digite o tamanho da árvore."));
 		ArvoreBST<Integer> arvore = new ArvoreBST<Integer>();
 		Random inteiro = new Random();
@@ -40,6 +40,19 @@ public class TesteArvoreBST {
 			inteiros.add(adicionar);
 			System.out.println(arvore);
 		}
+
+		for (int j = 0; j < tamanho; j++) {
+			Integer i = inteiros.get(j);
+			System.out.println("Antecessor de " + i + " = " + arvore.antecessor(i));
+		}
+
+		for (int j = 0; j < tamanho; j++) {
+			Integer i = inteiros.get(j);
+			System.out.println("Sucessor de " + i + " = " + arvore.sucessor(i));
+		}
+		
+		System.out.println(arvore.toStringOrdered());
+		
 		System.out.println(inteiros);
 		for (int i = 0; i < tamanho; i++) {
 			int itemARetirar = inteiro.nextInt(inteiros.size());
