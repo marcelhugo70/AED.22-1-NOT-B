@@ -1,16 +1,15 @@
 package ordenacao;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Random;
 
 
-class ClasseParaTestarSort {
+class ClasseParaTestarBusca {
 
 	private static Veiculo[] vetor;
 	private static Integer[] vetorInts;
 	private static String[] vetorStrings;
-	private static int[] tamanhos = {10, 500};
+	private static int[] tamanhos = {100, 5000};
 	
 	public static void main(String[] args) {
 		initializeClass();
@@ -22,12 +21,20 @@ class ClasseParaTestarSort {
 		for (Integer i : tamanhos) {
 			Veiculo[] vetorCopiado = Arrays.copyOf(vetor, i);
 			System.out.println("Vetor com " + i + " ve�culos");
-			System.out.println(Arrays.toString(vetorCopiado));
-			ultimoNanoTime = System.nanoTime();
+			//System.out.println(Arrays.toString(vetorCopiado));
 			meuAlgoritmo.sort(vetorCopiado);
+			System.out.println("Pesquisa COM sucesso:");
+			ultimoNanoTime = System.nanoTime();
+			int posicao = ClasseDeBusca.pesquisaBinaria(vetorCopiado,vetorCopiado[95]);
 			tempoExecucao = System.nanoTime() - ultimoNanoTime;
-			System.out.println("Vetor ORDENADO com " + i + " ve�culos em "+tempoExecucao+" ns");
-			System.out.println(Arrays.toString(vetorCopiado));
+			System.out.println("Posição = "+posicao+ " em "+tempoExecucao+" ns");
+			System.out.println("Pesquisa SEM sucesso:");
+			ultimoNanoTime = System.nanoTime();
+			Veiculo veiculo = new Veiculo();
+			veiculo.setPlaca("NAO-EXIS");
+			posicao = ClasseDeBusca.pesquisaBinaria(vetorCopiado,veiculo);
+			tempoExecucao = System.nanoTime() - ultimoNanoTime;
+			System.out.println("Posição = "+posicao+ " em "+tempoExecucao+" ns");
 		}
 
 		// a linha abaixo precisa ser alterada para a classe criada pela equipe
@@ -36,12 +43,17 @@ class ClasseParaTestarSort {
 		for (Integer i : tamanhos) {
 			Integer[] vetorCopiado = Arrays.copyOf(vetorInts, i);
 			System.out.println("Vetor com " + i + " inteiros");
-			System.out.println(Arrays.toString(vetorCopiado));
-			ultimoNanoTime = System.nanoTime();
+			//System.out.println(Arrays.toString(vetorCopiado));
 			meuAlgoritmo2.sort(vetorCopiado);
+			ultimoNanoTime = System.nanoTime();
+			int posicao = ClasseDeBusca.pesquisaBinaria(vetorCopiado,vetorCopiado[95]);
 			tempoExecucao = System.nanoTime() - ultimoNanoTime;
-			System.out.println("Vetor ORDENADO com " + i + " inteiros em "+tempoExecucao+" ns");
-			System.out.println(Arrays.toString(vetorCopiado));
+			System.out.println("Posição = "+posicao+ " em "+tempoExecucao+" ns");
+			System.out.println("Pesquisa SEM sucesso:");
+			ultimoNanoTime = System.nanoTime();
+			posicao = ClasseDeBusca.pesquisaBinaria(vetorCopiado,Integer.MIN_VALUE);
+			tempoExecucao = System.nanoTime() - ultimoNanoTime;
+			System.out.println("Posição = "+posicao+ " em "+tempoExecucao+" ns");
 		}
 		
 		// a linha abaixo precisa ser alterada para a classe criada pela equipe
@@ -50,12 +62,17 @@ class ClasseParaTestarSort {
 		for (Integer i : tamanhos) {
 			String[] vetorCopiado = Arrays.copyOf(vetorStrings, i);
 			System.out.println("Vetor com " + i + " Strings");
-			System.out.println(Arrays.toString(vetorCopiado));
-			ultimoNanoTime = System.nanoTime();
+			//System.out.println(Arrays.toString(vetorCopiado));
 			meuAlgoritmo3.sort(vetorCopiado);
+			ultimoNanoTime = System.nanoTime();
+			int posicao = ClasseDeBusca.pesquisaBinaria(vetorCopiado,vetorCopiado[90]);
 			tempoExecucao = System.nanoTime() - ultimoNanoTime;
-			System.out.println("Vetor ORDENADO com " + i + " Strings em "+tempoExecucao+" ns");
-			System.out.println(Arrays.toString(vetorCopiado));
+			System.out.println("Posição = "+posicao+ " em "+tempoExecucao+" ns");
+			System.out.println("Pesquisa SEM sucesso:");
+			ultimoNanoTime = System.nanoTime();
+			posicao = ClasseDeBusca.pesquisaBinaria(vetorCopiado,"não existente");
+			tempoExecucao = System.nanoTime() - ultimoNanoTime;
+			System.out.println("Posição = "+posicao+ " em "+tempoExecucao+" ns");
 		}
 	}
 
@@ -89,45 +106,3 @@ class ClasseParaTestarSort {
 	}
 }
 
-class GeradorAleatorio {
-
-	private static Random geraNumero = new Random();
-	private static String[] nomes = { "Jos�", "Maria", "Pedro", "Jo�o", "Mario", "Paulo", "Paula", "Sandra", "Andr�",
-			"Carla" };
-	private static String[] modelos = { "Gol", "Mobi", "Fox", "Fusca", "C3", "Captur", "i30", "Fiesta", "Fit",
-			"Picanto" };
-
-	private static int anoAtual = (LocalDate.now().getYear());
-
-	public static String geraNome() {
-		return nomes[geraNumero.nextInt(10)];
-	}
-
-	public static String geraPlaca() {
-		String placa = "";
-		for (int i = 0; i < 3; i++) {
-			placa += (char) (65 + geraNumero.nextInt(26)); // ASCII 65 = A
-		}
-		placa += "-";
-		for (int i = 0; i < 4; i++) {
-			placa += (char) (48 + geraNumero.nextInt(10)); // ASCII 48 = 0
-		}
-
-		return placa;
-	}
-
-	public static String geraModelo() {
-		return modelos[geraNumero.nextInt(10)];
-	}
-
-	public static int geraAno() {
-		int redutor = geraNumero.nextInt(10);
-		if (redutor > 8) {
-			redutor = geraNumero.nextInt(60);
-		} else {
-			redutor = geraNumero.nextInt(20);
-		}
-
-		return anoAtual - redutor;
-	}
-}
