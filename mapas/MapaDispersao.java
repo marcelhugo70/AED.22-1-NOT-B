@@ -3,10 +3,10 @@ package mapas;
 import java.math.BigInteger;
 
 /*
- * Esta implementação de MapaDispersao não realiza o tratamento de colisão.
+ * Esta implementaï¿½ï¿½o de MapaDispersao nï¿½o realiza o tratamento de colisï¿½o.
  * @author Marcel Hugo
  * 
- * Alteração feita por: Gabriel Arno Voltolini
+ * Alteraï¿½ï¿½o feita por: 
  * 
  */
 
@@ -20,21 +20,21 @@ public class MapaDispersao<K, T> {
 	}
 
 	private int calcularHash(K chave) {
-		// calcula índice do vetor
+		// calcula ï¿½ndice do vetor
 		return (chave.hashCode() & 0x7fffffff) % tabela.length;
-		// & 0x7fffffff : esta operação binária garante que o valor será positivo
+		// & 0x7fffffff : esta operaï¿½ï¿½o binï¿½ria garante que o valor serï¿½ positivo
 	}
 
 	public boolean inserir(K chave, T valor) {
 		int index = calcularHash(chave);
 
-		if (tabela[index] == null) { // se posição estiver vazia, guarda o par<chave,valor>
+		if (tabela[index] == null) { // se posiï¿½ï¿½o estiver vazia, guarda o par<chave,valor>
 			ObjetoMapa<K, T> om = new ObjetoMapa<K, T>();
 			om.setChave(chave);
 			om.setValor(valor);
 			tabela[index] = om;
 			return true;
-		} else { // já possui um objeto na posição (colisão)
+		} else { // jï¿½ possui um objeto na posiï¿½ï¿½o (colisï¿½o)
 			return false;
 		}
 
